@@ -7,4 +7,8 @@ const server = express();
 server.use(express.json());
 server.use('/api/schemes', SchemeRouter);
 
+server.get('/', (req, res) => {
+    res.send('Welcome to the Schemes API')
+})
+
 module.exports = server;
