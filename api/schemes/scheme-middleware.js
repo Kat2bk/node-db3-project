@@ -10,7 +10,19 @@
 const db = require('./scheme-model');
 
 const checkSchemeId = (req, res, next) => {
+  const scheme_id = req.params.scheme_id;
 
+  db.findById(scheme_id)
+  .then(scheme => {
+    if (scheme) {
+      next()
+    } else {
+      return res.status(404).json({message: `scheme with ${scheme_id} not found`})
+    }
+  })
+  .catch(error => {
+    next(error)
+  })
 }
 
 /*
@@ -23,6 +35,13 @@ const checkSchemeId = (req, res, next) => {
 */
 const validateScheme = (req, res, next) => {
 
+  const {scheme_name} = req.body;
+
+  if (!scheme_name || scheme_name === "" || typeof scheme_name !== 'string') {
+    res.status(400).json({message: 'invalid scheme_name'})
+  } else {
+    next()
+  }
 }
 
 /*
